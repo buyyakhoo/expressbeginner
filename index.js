@@ -1,19 +1,24 @@
 const express = require('express');
+const router = express.Router();
 const path = require('path');
-const users = require('./users');
+
+const moment = require('moment');
+const logger = require('./middleware/logger');
 
 const app = express();
 
-const logger = (req, res, next) => {
-    console.log('Hello!');
-    next();
-}
 
 //init middleware
-app.use(logger);
+//app.use(logger);
 
-//get all users
-app.get('/api/users', (req, res) => res.json(users));
+//body parse middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false}));
+
+
+app.use('/api/users', require('./routes/api/users'));
+
+
 
 /*
 app.get('/', (req, res) => {
