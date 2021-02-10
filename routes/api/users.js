@@ -3,6 +3,7 @@ const router = express.Router();
 const users = require('../../users');
 const uuid = require('uuid');
 
+
 //get all users
 router.get('/', (req, res) => res.json(users));
 
@@ -48,6 +49,21 @@ router.put('/:id', (req, res) => {
             }
         })
     }
+})
+
+//delete user
+router.delete('/:id', (req, res) => {
+    let found = users.some(user => user.id === parseInt(req.params.id));
+
+    if (found) {
+        res.json({
+            msg: 'Member deleted',
+            users: users.filter(user => user.id !== parseInt(req.params.id))
+        })
+    } else {
+        res.status(400).json({ msg: `No user with the id of ${req.params.id}` });
+    }
+
 })
 
 module.exports = router;
